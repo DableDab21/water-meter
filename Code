@@ -2,7 +2,6 @@
 
 char count = 0, mode = 0;
 char ledPin = 13;  
-// the setup routine runs once when you press reset:
 void setup() {                
 DDRD &= 0xFB;
 PORTD &= 0xFB;
@@ -17,14 +16,12 @@ EIMSK = (1 << INT0);
 asm("sei"); 
 
 }
-
-// the loop routine runs over and over again forever:
 void loop() 
 {
 }
 
 
-ISR(INT0_vect) { /* signal handler for external interrupt int0 */
+ISR(INT0_vect) {
 switch(mode)
 {
   case 0:
@@ -41,6 +38,6 @@ switch(mode)
     else {count = 0; digitalWrite(ledPin, LOW); mode = 0; }
   break;
  
-} // switch
+} 
 
    }
