@@ -1,0 +1,46 @@
+#include <avr\interrupt.h>
+
+char count = 0, mode = 0;
+char ledPin = 13;  
+// the setup routine runs once when you press reset:
+void setup() {                
+DDRD &= 0xFB;
+PORTD &= 0xFB;
+pinMode(ledPin, OUTPUT); 
+
+mode = 0;
+count = 0;
+
+EICRA = (1 << ISC00);
+EIFR = 0xFF;
+EIMSK = (1 << INT0);
+asm("sei"); 
+
+}
+
+// the loop routine runs over and over again forever:
+void loop() 
+{
+}
+
+
+ISR(INT0_vect) { /* signal handler for external interrupt int0 */
+switch(mode)
+{
+  case 0:
+  
+  count++;
+    if (count < 3) { digitalWrite(ledPin, LOW); }
+    else {count = 0; digitalWrite(ledPin, HIGH); mode = 1; }
+
+  break;
+  
+  case 1:
+  count++;
+    if (count < 3) { digitalWrite(ledPin, HIGH); }
+    else {count = 0; digitalWrite(ledPin, LOW); mode = 0; }
+  break;
+ 
+} // switch
+
+   }
